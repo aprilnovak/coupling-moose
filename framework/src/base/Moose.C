@@ -170,6 +170,7 @@
 #include "LegendrePolynomial.h"
 #include "FourierPolynomial.h"
 #include "ZernikePolynomial.h"
+#include "ZernikeLegendreReconstruction.h"
 
 // materials
 #include "GenericConstantMaterial.h"
@@ -620,6 +621,7 @@ registerObjects(Factory & factory)
   registerFunction(LegendrePolynomial);
   registerFunction(FourierPolynomial);
   registerFunction(ZernikePolynomial);
+  registerFunction(ZernikeLegendreReconstruction);
 
   // materials
   registerMaterial(GenericConstantMaterial);
