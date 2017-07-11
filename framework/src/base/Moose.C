@@ -167,6 +167,7 @@
 #include "LinearCombinationFunction.h"
 #include "ImageFunction.h"
 #include "VectorPostprocessorFunction.h"
+#include "LegendrePolynomial.h"
 
 // materials
 #include "GenericConstantMaterial.h"
@@ -614,6 +615,7 @@ registerObjects(Factory & factory)
   registerFunction(LinearCombinationFunction);
   registerFunction(ImageFunction);
   registerFunction(VectorPostprocessorFunction);
+  registerFunction(LegendrePolynomial);
 
   // materials
   registerMaterial(GenericConstantMaterial);
