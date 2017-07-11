@@ -169,6 +169,7 @@
 #include "VectorPostprocessorFunction.h"
 #include "LegendrePolynomial.h"
 #include "FourierPolynomial.h"
+#include "ZernikePolynomial.h"
 
 // materials
 #include "GenericConstantMaterial.h"
@@ -618,6 +619,7 @@ registerObjects(Factory & factory)
   registerFunction(VectorPostprocessorFunction);
   registerFunction(LegendrePolynomial);
   registerFunction(FourierPolynomial);
+  registerFunction(ZernikePolynomial);
 
   // materials
   registerMaterial(GenericConstantMaterial);
