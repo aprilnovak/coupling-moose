@@ -274,6 +274,7 @@
 #include "NodalNormalsPreprocessor.h"
 #include "SolutionUserObject.h"
 #include "ZernikeLegendreDeconstruction.h"
+#include "ZLDeconstruction.h"
 #ifdef LIBMESH_HAVE_FPARSER
 #include "Terminator.h"
 #endif
@@ -727,6 +728,7 @@ registerObjects(Factory & factory)
   registerUserObject(NodalNormalsEvaluator);
   registerUserObject(SolutionUserObject);
   registerUserObject(ZernikeLegendreDeconstruction);
+  registerUserObject(ZLDeconstruction);
 #ifdef LIBMESH_HAVE_FPARSER
   registerUserObject(Terminator);
 #endif
