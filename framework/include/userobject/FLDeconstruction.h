@@ -43,7 +43,9 @@ protected:
   virtual Real computeIntegral(int, int);
 
   unsigned int _qp;
+  const VariableValue & _u;
   const VariableGradient & _grad_u;
+  bool _flux_integral;
   int _l_order;
   int _f_order;
   int _num_entries;
@@ -57,6 +59,7 @@ protected:
   const PostprocessorValue & _surface_area_pp;
 
   std::vector<Real> _integral_value;
+  const MaterialProperty<Real> & _diffusion_coefficient;
 };
 
 #endif
