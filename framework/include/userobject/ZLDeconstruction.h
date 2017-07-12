@@ -3,8 +3,6 @@
 
 // MOOSE includes
 #include "MooseVariableInterface.h"
-
-// Okapi includes
 #include "ElementUserObject.h"
 #include "LegendrePolynomial.h"
 #include "ZernikePolynomial.h"
