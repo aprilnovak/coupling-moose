@@ -18,8 +18,7 @@ validParams<ZLDeconstruction>()
   InputParameters params = validParams<ElementUserObject>();
   params.addRequiredCoupledVar("variable", "The variable that will be integrated");
   params.addRequiredParam<int>("l_order", "Order of Legendre expansion.");
-  params.addRequiredParam<int>("n_order",
-    "Order of Zernike expansion for current set of coefficients.");
+  params.addRequiredParam<int>("n_order", "Order of Zernike expansion.");
   params.addRequiredParam<std::string>("legendre_function", \
     "Name of function to compute Legendre polynomial value at a point.");
   params.addRequiredParam<std::string>("zernike_function", \
