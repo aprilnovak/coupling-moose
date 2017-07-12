@@ -276,6 +276,7 @@
 #include "ZernikeLegendreDeconstruction.h"
 #include "ZLDeconstruction.h"
 #include "FourierLegendreDeconstruction.h"
+#include "FLDeconstruction.h"
 #ifdef LIBMESH_HAVE_FPARSER
 #include "Terminator.h"
 #endif
@@ -731,6 +732,7 @@ registerObjects(Factory & factory)
   registerUserObject(ZernikeLegendreDeconstruction);
   registerUserObject(ZLDeconstruction);
   registerUserObject(FourierLegendreDeconstruction);
+  registerUserObject(FLDeconstruction);
 #ifdef LIBMESH_HAVE_FPARSER
   registerUserObject(Terminator);
 #endif
