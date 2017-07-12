@@ -18,11 +18,9 @@
 // MOOSE includes
 #include "SideUserObject.h"
 #include "MooseVariableInterface.h"
-
 #include "LegendrePolynomial.h"
 #include "FourierPolynomial.h"
 
-// Forward Declarations
 class FLDeconstruction;
 
 template <>
@@ -36,18 +34,15 @@ public:
   virtual void initialize() override;
   virtual void execute() override;
   virtual void threadJoin(const UserObject & y) override;
-  virtual void finalize() override {}
+  virtual void finalize() override;
 
-  /// Returns the integral value
-  virtual Real getValue();
+  virtual Real getValue(int);
 
 protected:
-  virtual Real computeQpIntegral() = 0;
-  virtual Real computeIntegral();
+  virtual Real computeQpIntegral(int, int);
+  virtual Real computeIntegral(int, int);
 
   unsigned int _qp;
-
-  Real _integral_value;
   const VariableGradient & _grad_u;
   int _l_order;
   int _f_order;
@@ -60,6 +55,8 @@ protected:
 
   std::string _aux_scalar_name;
   const PostprocessorValue & _surface_area_pp;
+
+  std::vector<Real> _integral_value;
 };
 
 #endif

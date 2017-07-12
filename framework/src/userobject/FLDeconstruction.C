@@ -13,6 +13,8 @@
 /****************************************************************/
 
 #include "FLDeconstruction.h"
+#include "MooseVariableScalar.h"
+#include "SystemBase.h"
 
 // libmesh includes
 #include "libmesh/quadrature.h"
@@ -42,7 +44,6 @@ FLDeconstruction::FLDeconstruction(const InputParameters & parameters)
   : SideUserObject(parameters),
     MooseVariableInterface(this, false),
     _qp(0),
-    _integral_value(0),
     _grad_u(coupledGradient("variable")),
     _l_order(getParam<int>("l_order")),
     _f_order(getParam<int>("f_order")),
@@ -55,41 +56,91 @@ FLDeconstruction::FLDeconstruction(const InputParameters & parameters)
     _surface_area_pp(getPostprocessorValueByName(parameters.
       get<std::string>("surface_area_pp")))
 {
+  addMooseVariableDependency(mooseVariable());
+
   _num_entries = _l_order + 1;
-//  _integral_value.assign(_num_entries, 0.0);
+  _integral_value.assign(_num_entries, 0.0);
+
+  if (_l_direction == 0) // Legendre in x-direction, Zernike in y-z
+  {
+    _fdir1 = 1;
+    _fdir2 = 2;
+  }
+  else if (_l_direction == 1) // Legendre in y-direction, Zernike in x-z
+  {
+    _fdir1 = 0;
+    _fdir2 = 2;
+  }
+  else // Legendre in z-direction, Zernike in x-y
+  {
+    _fdir1 = 0;
+    _fdir2 = 1;
+  }
 }
 
 void
 FLDeconstruction::initialize()
 {
-  _integral_value = 0;
+  _integral_value.assign(_num_entries, 0.0);
 }
 
 void
 FLDeconstruction::execute()
 {
-  _integral_value += computeIntegral();
+  for (int l = 0; l < _num_entries; ++l)
+    _integral_value[l] += computeIntegral(_f_order, l);
 }
 
 Real
-FLDeconstruction::getValue()
+FLDeconstruction::getValue(int N)
 {
-  gatherSum(_integral_value);
-  return _integral_value;
+  gatherSum(_integral_value[N]);
+  return _integral_value[N];
 }
 
 void
 FLDeconstruction::threadJoin(const UserObject & y)
 {
-  const FLDeconstruction & pps = static_cast<const FLDeconstruction &>(y);
-  _integral_value += pps._integral_value;
+  for (int l = 0; l < _num_entries; ++l)
+  {
+    const FLDeconstruction & pps = static_cast<const FLDeconstruction &>(y);
+    _integral_value[l] += pps._integral_value[l];
+  }
 }
 
 Real
-FLDeconstruction::computeIntegral()
+FLDeconstruction::computeIntegral(int f, int l)
 {
   Real sum = 0;
   for (_qp = 0; _qp < _qrule->n_points(); _qp++)
-    sum += _JxW[_qp] * _coord[_qp] * computeQpIntegral();
+    sum += _JxW[_qp] * _coord[_qp] * computeQpIntegral(f, l);
   return sum;
+}
+
+Real
+FLDeconstruction::computeQpIntegral(int f, int l)
+{
+  Real l_func = _legendre_function.getPolynomialValue(_t,
+    _q_point[_qp](_l_direction), l);
+  Real f_func = _fourier_function.getPolynomialValue(_t,
+    _q_point[_qp](_fdir1), _q_point[_qp](_fdir2), f);
+
+  return _grad_u[_qp] * _normals[_qp] * l_func * f_func *
+    4.0 * M_PI / _surface_area_pp;
+}
+
+void
+FLDeconstruction::finalize()
+{
+  /* Store the result of the user object in a SCALAR variable.*/
+  MooseVariableScalar & scalar =
+    _fe_problem.getScalarVariable(_tid, _aux_scalar_name);
+  scalar.reinit();
+
+  std::vector<dof_id_type> & dof = scalar.dofIndices();
+
+  for (int i = 0; i < _num_entries; ++i)
+    scalar.sys().solution().set(dof[i], getValue(i));
+
+  scalar.sys().solution().close();
 }
