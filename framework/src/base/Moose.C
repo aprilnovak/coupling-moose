@@ -167,6 +167,11 @@
 #include "LinearCombinationFunction.h"
 #include "ImageFunction.h"
 #include "VectorPostprocessorFunction.h"
+#include "LegendrePolynomial.h"
+#include "FourierPolynomial.h"
+#include "ZernikePolynomial.h"
+#include "ZernikeLegendreReconstruction.h"
+#include "FourierLegendreReconstruction.h"
 
 // materials
 #include "GenericConstantMaterial.h"
@@ -268,6 +273,10 @@
 #include "NodalNormalsCorner.h"
 #include "NodalNormalsPreprocessor.h"
 #include "SolutionUserObject.h"
+#include "ZernikeLegendreDeconstruction.h"
+#include "ZLDeconstruction.h"
+#include "FourierLegendreDeconstruction.h"
+#include "FLDeconstruction.h"
 #ifdef LIBMESH_HAVE_FPARSER
 #include "Terminator.h"
 #endif
@@ -614,6 +623,11 @@ registerObjects(Factory & factory)
   registerFunction(LinearCombinationFunction);
   registerFunction(ImageFunction);
   registerFunction(VectorPostprocessorFunction);
+  registerFunction(LegendrePolynomial);
+  registerFunction(FourierPolynomial);
+  registerFunction(ZernikePolynomial);
+  registerFunction(ZernikeLegendreReconstruction);
+  registerFunction(FourierLegendreReconstruction);
 
   // materials
   registerMaterial(GenericConstantMaterial);
@@ -715,6 +729,10 @@ registerObjects(Factory & factory)
   registerUserObject(NodalNormalsCorner);
   registerUserObject(NodalNormalsEvaluator);
   registerUserObject(SolutionUserObject);
+  registerUserObject(ZernikeLegendreDeconstruction);
+  registerUserObject(ZLDeconstruction);
+  registerUserObject(FourierLegendreDeconstruction);
+  registerUserObject(FLDeconstruction);
 #ifdef LIBMESH_HAVE_FPARSER
   registerUserObject(Terminator);
 #endif
