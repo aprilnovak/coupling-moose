@@ -27,7 +27,7 @@ validParams<FLDeconstruction>()
      or a flux of the variable dotted with the unit normal vector. */
   InputParameters params = validParams<SideUserObject>();
   params.addRequiredCoupledVar("variable", "The variable that will be integrated");
-  params.addRequiredParam<bool>("flux_integral", false,
+  params.addParam<bool>("flux_integral", false,
     "Whether this user object integrates the flux of the variable or the scalar"
     " variable itself");
   params.addRequiredParam<int>("l_order", "Order of Legendre expansion");
