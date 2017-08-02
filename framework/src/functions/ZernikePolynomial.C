@@ -50,8 +50,8 @@ ZernikePolynomial::getPolynomialValue(Real t, Real x, Real y, int m, int n)
   Real distance = (x - _center[0]) * (x - _center[0]) +
     (y - _center[1]) * (y - _center[1]);
 
-  if (distance > _radius) mooseWarning("Point provided to ZernikePolynomial "
-    "is outside of the specified circle.");
+//  if (distance > _radius) mooseWarning("Point provided to ZernikePolynomial "
+//    "is outside of the specified circle.");
 
   // Check that m is one of -n, -n + 2, -n + 4, ..., n
   Real is_int = (n - abs(m)) / 2;

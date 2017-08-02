@@ -63,9 +63,9 @@ ZernikeLegendreReconstruction::ZernikeLegendreReconstruction(const InputParamete
   {
     _poly_coeffs.push_back(&coupledScalarValue("poly_coeffs", i));
 
-    if ((*_poly_coeffs[i]).size() != _num)
-      mooseWarning("order of coupled scalar variable does not equal number"
-        " of expected Zernike coefficients.");
+//    if ((*_poly_coeffs[i]).size() != _num)
+//      mooseWarning("order of coupled scalar variable does not equal number"
+//        " of expected Zernike coefficients.");
   }
 }
 

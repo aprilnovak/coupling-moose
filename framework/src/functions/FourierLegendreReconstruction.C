@@ -13,6 +13,7 @@
 /****************************************************************/
 
 #include "FourierLegendreReconstruction.h"
+#include <iostream>
 
 template<>
 InputParameters validParams<FourierLegendreReconstruction>()
@@ -59,16 +60,20 @@ FourierLegendreReconstruction::FourierLegendreReconstruction(const InputParamete
     _fdir2 = 1;
   }
 
-  // Get the coupled scalar variables storing the expansion coefficients.
-  // Check that the size of each of the coupled auxvariables matches the
-  // expected number of Legendre coefficients.
-  for(int i=0; i < _f_order; i++)
+  // Get the coupled scalar variables storing the expansion coefficients. This
+  // will give an error if the f_order is too large (not enough coupled
+  // variables).
+  // TODO: implement check that each coupled variable is the same size and
+  //       that the number of coefficients per variable match expected
+  //       for Legendre order
+  for (int i = 0; i <= _f_order; i++)
   {
-    _poly_coeffs.push_back(&coupledScalarValue("poly_coeffs",i));
-    if ((*_poly_coeffs[i]).size() != _l_order + 1)
-      mooseWarning("order of coupled scalar variables do not equal the number"
-        " of expected Legendre coefficients.");
+    _poly_coeffs.push_back(&coupledScalarValue("poly_coeffs", i));
   }
+
+  // TODO: check to see if the number of provided variables exceeds the number
+  // expected based on the provided Fourier order (i.e. if f_order was made
+  // too small).
 }
 
 FourierLegendreReconstruction::~FourierLegendreReconstruction()
@@ -80,9 +85,9 @@ FourierLegendreReconstruction::value(Real t, const Point & p)
 {
   Real val = 0.0;
 
-  for (int f = 0; f < _f_order; ++f)
+  for (int f = 0; f <= _f_order; ++f)
   {
-    for (int l = 0; l < _l_order; ++l)
+    for (int l = 0; l <= _l_order; ++l)
     {
       val += (*_poly_coeffs[f])[l]
         * _legendre_function.getPolynomialValue(t, p(_l_direction), l)
